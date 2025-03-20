@@ -172,8 +172,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
-# Ignore large dataset files
-data/processed_toxic_comments.csv
-data/specialized_rater_pools_data.csv
-bert_toxic_classifier/

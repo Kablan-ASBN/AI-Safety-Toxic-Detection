@@ -47,6 +47,7 @@ val_dataset = ToxicDataset(val_texts, val_labels)
 model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
 
 # Define training arguments
+# Define training arguments
 training_args = TrainingArguments(
     output_dir="bert_model",
     per_device_train_batch_size=16,
@@ -55,6 +56,7 @@ training_args = TrainingArguments(
     evaluation_strategy="epoch",
     save_strategy="epoch",
     logging_dir="logs",
+    report_to="none"
 )
 
 # Trainer instance

@@ -3,11 +3,9 @@ import re
 import string
 import os
 
-print("All imports are working!")
-
 def clean_text(text):
     """Remove special characters, extra spaces, and lowercase."""
-    text = text.lower()  # Convert to lowercase
+    text = str(text).lower()  # Convert to lowercase
     text = re.sub(r'\[.*?\]', '', text)  # Remove brackets
     text = re.sub(r'\s+', ' ', text).strip()  # Remove extra spaces
     text = text.translate(str.maketrans('', '', string.punctuation))  # Remove punctuation
@@ -21,14 +19,14 @@ def preprocess_data(input_file, output_file):
     # Drop unnecessary columns
     df = df.drop(columns=["id", "unique_contributor_id", "rater_group"])
 
-    # Drop missing values
-    df = df.dropna()
+    # Drop rows where all toxicity labels are NaN
+    df = df.dropna(subset=["identity_attack", "insult", "obscene", "threat", "toxic_score"], how="all")
 
-    # Create a single 'toxic' label (1 if any toxicity label is 1)
-    df["toxic"] = df[["identity_attack", "insult", "obscene", "threat", "toxic_score"]].max(axis=1)
+    # Fill remaining NaN values with 0
+    df.fillna(0, inplace=True)
 
-    # Convert '-1' labels to '0'
-    df["toxic"] = df["toxic"].apply(lambda x: 1 if x == 1 else 0)
+    # Create a single `toxic` label (1 if any toxicity label is 1)
+    df["toxic"] = df[["identity_attack", "insult", "obscene", "threat", "toxic_score"]].max(axis=1).astype(int)
 
     # Drop original toxicity columns
     df = df.drop(columns=["identity_attack", "insult", "obscene", "threat", "toxic_score"])
@@ -39,12 +37,15 @@ def preprocess_data(input_file, output_file):
     # Drop the original comment_text column
     df = df.drop(columns=["comment_text"])
 
+    # Drop duplicate comments
+    df = df.drop_duplicates(subset=["cleaned_text"])
+
     # Ensure the output directory exists
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
     # Save processed data
     df.to_csv(output_file, index=False)
-    print(f"✅ Data preprocessing complete. Saved to {output_file}")
+    print(f"Data preprocessing complete. Saved to {output_file}")
 
 # Run preprocessing
 if __name__ == "__main__":

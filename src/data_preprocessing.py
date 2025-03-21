@@ -24,8 +24,11 @@ def preprocess_data(input_file, output_file):
     # Drop missing values
     df = df.dropna()
 
-    # Create a single `toxic` label (1 if any toxicity label is 1)
+    # Create a single 'toxic' label (1 if any toxicity label is 1)
     df["toxic"] = df[["identity_attack", "insult", "obscene", "threat", "toxic_score"]].max(axis=1)
+
+    # Convert '-1' labels to '0'
+    df["toxic"] = df["toxic"].apply(lambda x: 1 if x == 1 else 0)
 
     # Drop original toxicity columns
     df = df.drop(columns=["identity_attack", "insult", "obscene", "threat", "toxic_score"])
@@ -41,7 +44,7 @@ def preprocess_data(input_file, output_file):
 
     # Save processed data
     df.to_csv(output_file, index=False)
-    print(f"Data preprocessing complete. Saved to {output_file}")
+    print(f"✅ Data preprocessing complete. Saved to {output_file}")
 
 # Run preprocessing
 if __name__ == "__main__":

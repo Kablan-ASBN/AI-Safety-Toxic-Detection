@@ -174,3 +174,18 @@ cython_debug/
 .pypircbert_toxic_classifier/
 bert_model/
 data/
+
+# Ignore trained model files and checkpoints
+bert_toxic_classifier/
+*.safetensors
+*.bin
+*.pt
+
+# Ignore datasets
+data/*.csv
+
+# Ignore logs and temporary files
+logs/
+*.log
+*.tmp
+__pycache__/

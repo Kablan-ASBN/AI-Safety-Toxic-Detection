@@ -1,44 +1,72 @@
 # AI-Safety System: Toxic Content Detection
 
-## Overview
-This project uses natural language processing (NLP) to identify and mitigate harmful or toxic online content. It focuses on AI safety by training a BERT-based classifier to detect toxicity in user-generated comments. The goal is to ensure responsible language model deployment and moderation systems by flagging identity attacks, threats, and hate speech at scale.
+## Overview  
+This project uses natural language processing (NLP) to detect and mitigate toxic online content. It focuses on AI safety by training a BERT-based classifier to identify identity attacks, threats, obscenity, and hate speech in user-generated comments. The goal is to support responsible language model deployment and content moderation at scale.
 
-## Tech Stack Used:
-**Python:** pandas, numpy, scikit-learn
-**NLP:** BERT via Hugging Face Transformers
-**Machine Learning:** PyTorch
-**API Deployment:** FastAPI (in progress)
-**Cloud Hosting:** Render (in progress)
+## Tech Stack  
+- **Python**: pandas, numpy, scikit-learn  
+- **Machine Learning**: PyTorch  
+- **NLP**: BERT via Hugging Face Transformers  
+- **Deployment**: FastAPI *(in progress)*  
+- **Cloud Hosting**: Render *(planned)*  
 
-## Dataset
-I use the **Jigsaw Specialized Rater Pools Dataset** from [Kaggle](https://www.kaggle.com/datasets/google/jigsaw-specialized-rater-pools-dataset/data).  
-The dataset contains **toxic and non-toxic comments**, labeled for identity attacks, insults, threats, and obscenity.
+## Dataset  
+The model is trained on the [Jigsaw Specialized Rater Pools Dataset](https://www.kaggle.com/datasets/google/jigsaw-specialized-rater-pools-dataset/data), which includes comments labeled for identity attacks, insults, threats, and other forms of toxicity.
 
-## Features
-**Text Preprocessing Pipeline:** Cleaning, lowercasing, punctuation removal
-**Binary Classification:** Toxic vs. non-toxic labels using BERT
-**Training on Google Colab:** with GPU acceleration (A100)
-**Evaluation Metrics:** Accuracy, precision, recall, F1-score
-**API Endpoint (in progress)**: Real-time comment classification with FastAPI
-**Model Deployment (planned):** To be hosted on Render or Hugging Face Spaces
+## Features  
+- Clean preprocessing pipeline: lowercasing, punctuation removal, etc.  
+- Binary classification: toxic vs. non-toxic comments  
+- Trained on Google Colab using A100 GPU  
+- Evaluation with standard metrics: accuracy, precision, recall, F1-score  
+- Predictive inference via CLI or API (API in progress)
 
-## Performance
+## Model Performance  
 The fine-tuned BERT model achieved:
 
-  -Accuracy: 99.9%
-  -F1-score (toxic class): 0.9997
-  -Macro average F1-score: 0.9850
-These metrics indicate high robustness, especially in differentiating between clean and harmful content.
+- **Accuracy**: 99.9%  
+- **F1-score (Toxic class)**: 0.9997  
+- **Macro average F1-score**: 0.9850  
 
-## Download the Trained Model
-The full set of fine-tuned model files is available for download:
+These results show strong robustness, especially in distinguishing harmful vs. clean content.
 
-Google Drive Folder: https://drive.google.com/drive/folders/1uLslf5BDwLqoB26UGNpvIZf6wK9vy_Fl?usp=sharing
+## Making Predictions
 
-This includes the trained weights, tokenizer configuration, and supporting files needed for inference.
+### Run Locally  
+Ensure the model folder is named `bert_toxic_classifier/` and placed in your project root. Then run:
 
-To use it:
+```bash
+python src/predict.py --text "You're a horrible person and nobody likes you."
+```
 
-Download and unzip the folder.
-Place it in your project root as bert_toxic_classifier/.
-Run src/api.py or any inference script to load the model.
+Sample output:
+
+```
+Step 1: Input Text -> You're a horrible person and nobody likes you.
+Step 2: Prediction: Toxic (Confidence: 99.2%)
+```
+
+### Run in Google Colab  
+1. Mount Google Drive  
+2. Upload the full project folder including the model directory  
+3. In a code cell, run:
+
+```python
+!python src/predict.py --text "Your comment here"
+```
+
+This simulates a real-world moderation use case — useful for platforms, chat systems, or backend screening tools.
+
+## Download the Trained Model  
+Due to GitHub’s file size limits, the model is hosted externally:
+
+📁 [Download from Google Drive](https://drive.google.com/drive/folders/1uLslf5BDwLqoB26UGNpvIZf6wK9vy_Fl?usp=sharing)
+
+**What’s included:**  
+- Model weights (`pytorch_model.bin`, `model.safetensors`)  
+- Tokenizer files  
+- Configs for BERT-based inference
+
+**To use:**  
+- Download and unzip the folder  
+- Place it in your root directory as `bert_toxic_classifier/`  
+- Run the prediction script or plug into an API

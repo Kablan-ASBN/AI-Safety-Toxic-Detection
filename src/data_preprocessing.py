@@ -16,7 +16,7 @@ def clean_text(text):
 def preprocess_data(input_file, output_file):
     """Preprocess dataset: clean text, handle missing values, create labels."""
     # Load dataset
-    df = pd.read_csv(input_file, encoding="utf-8", quotechar='"')
+    df = pd.read_csv(input_file, encoding="utf-8", quotechar='"', on_bad_lines="skip")
 
     # Drop unnecessary columns
     df = df.drop(columns=["id", "unique_contributor_id", "rater_group"])

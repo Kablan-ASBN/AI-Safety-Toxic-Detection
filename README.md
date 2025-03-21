@@ -27,7 +27,9 @@ The fine-tuned BERT model achieved:
 - **F1-score (Toxic class)**: 0.9997  
 - **Macro average F1-score**: 0.9850  
 
-These results show strong robustness, especially in distinguishing harmful vs. clean content.
+These results reflect strong model performance on the dataset. However, it's worth noting that the training data is highly imbalanced, with a significant skew toward toxic examples. As a result, the model sometimes over-predicts toxicity — flagging neutral or even positive comments (e.g. "You are kind", "You are cute") as toxic with high confidence.
+
+This behavior highlights a common challenge in applied NLP: balancing high precision with real-world fairness and nuance. Future work includes retraining on a balanced dataset and introducing thresholding to reduce false positives for non-toxic language.
 
 ## Making Predictions
 

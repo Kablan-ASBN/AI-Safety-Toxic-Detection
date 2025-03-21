@@ -22,7 +22,11 @@ def preprocess_data(input_file, output_file):
     # Drop rows where all toxicity labels are NaN
     df = df.dropna(subset=["identity_attack", "insult", "obscene", "threat", "toxic_score"], how="all")
 
-    # Fill remaining NaN values with 0
+    # Convert -1 values to 0 in toxicity labels
+    for col in ["identity_attack", "insult", "obscene", "threat", "toxic_score"]:
+        df[col] = df[col].apply(lambda x: 0 if x == -1 else x)
+
+    # Fill any remaining NaN values with 0
     df.fillna(0, inplace=True)
 
     # Create a single `toxic` label (1 if any toxicity label is 1)

@@ -1,74 +1,137 @@
-# AI-Safety System: Toxic Content Detection
 
-## Overview  
-This project uses natural language processing (NLP) to detect and mitigate toxic online content. It focuses on AI safety by training a BERT-based classifier to identify identity attacks, threats, obscenity, and hate speech in user-generated comments. The goal is to support responsible language model deployment and content moderation at scale.
+# AI-Safety-Toxic-Content-Detection  
+BERT-based toxic comment classifier for responsible AI safety | Identity attack & hate speech detection | CLI & API-ready NLP project
 
-## Tech Stack  
-- **Python**: pandas, numpy, scikit-learn  
-- **Machine Learning**: PyTorch  
-- **NLP**: BERT via Hugging Face Transformers  
-- **Deployment**: FastAPI *(in progress)*  
-- **Cloud Hosting**: Render *(planned)*  
+This system leverages BERT and NLP techniques to detect and flag toxic online content — including identity attacks, threats, obscenity, and hate speech. Designed for AI safety, it demonstrates how machine learning can support responsible language model deployment and large-scale content moderation.
 
-## Dataset  
-The model is trained on the [Jigsaw Specialized Rater Pools Dataset](https://www.kaggle.com/datasets/google/jigsaw-specialized-rater-pools-dataset/data), which includes comments labeled for identity attacks, insults, threats, and other forms of toxicity.
+---
 
-## Features  
-- Clean preprocessing pipeline: lowercasing, punctuation removal, etc.  
-- Binary classification: toxic vs. non-toxic comments  
-- Trained on Google Colab using A100 GPU  
-- Evaluation with standard metrics: accuracy, precision, recall, F1-score  
-- Predictive inference via CLI or API (API in progress)
+## Project Summary  
+"Protect users, platforms, and communities from toxic language."
 
-## Model Performance  
-The fine-tuned BERT model achieved:
+Toxic online content remains a persistent challenge across digital platforms. This project demonstrates the the use of fine-tuned transformer models to classify user-generated comments as toxic or non-toxic. It supports scalable moderation systems and future integrations with language models and safety pipelines.
 
-- **Accuracy**: 99.9%  
-- **F1-score (Toxic class)**: 0.9997  
-- **Macro average F1-score**: 0.9850  
+---
 
-These results reflect strong model performance on the dataset. However, it's worth noting that the training data is highly imbalanced, with a significant skew toward toxic examples. As a result, the model sometimes over-predicts toxicity — flagging neutral or even positive comments (e.g. "You are kind", "You are cute") as toxic with high confidence.
+## Dataset
 
-This behavior highlights a common challenge in applied NLP: balancing high precision with real-world fairness and nuance. Future work includes retraining on a balanced dataset and introducing thresholding to reduce false positives for non-toxic language.
+- Source: Jigsaw Specialized Rater Pools Dataset  
+  https://www.kaggle.com/datasets/google/jigsaw-specialized-rater-pools-dataset/data
+- Labels: Identity attack, threat, obscenity, insult, and toxicity
+- Use Case: Binary classification — toxic (1) vs. non-toxic (0)
 
-## Making Predictions
+---
 
-### Run Locally  
-Ensure the model folder is named `bert_toxic_classifier/` and placed in your project root. Then run:
+## Key Features
 
-```bash
+- Clean NLP preprocessing: lowercasing, punctuation stripping, etc.
+- Fine-tuned BERT model for toxic comment detection
+- CLI-based inference with sample inputs and outputs
+- FastAPI-based deployment planned
+- High-performance training with A100 GPU on Google Colab
+- External model hosting due to file size limits
+
+---
+
+## Tech Stack
+
+- Language: Python  
+- Libraries: pandas, numpy, scikit-learn  
+- ML Framework: PyTorch  
+- NLP: Hugging Face Transformers (BERT)  
+- Deployment: FastAPI (in progress)  
+- Hosting: Render (planned)
+
+---
+
+## Model Performance
+
+| Metric                 | Score     |
+|------------------------|-----------|
+| Accuracy               | 99.9%     |
+| F1-Score (Toxic Class) | 0.9997    |
+| Macro F1-Score         | 0.9850    |
+
+The model was trained on a highly imbalanced dataset skewed toward toxic comments.  
+While recall is excellent, it sometimes over-predicts toxicity, flagging neutral comments like "You're kind" as toxic.  
+Future improvements include balanced retraining and smarter threshold tuning.
+
+---
+
+## CLI Usage
+
+### Run Locally
+```
 python src/predict.py --text "You're a horrible person and nobody likes you."
 ```
 
-Sample output:
-
+Example Output:
 ```
 Step 1: Input Text -> You're a horrible person and nobody likes you.
 Step 2: Prediction: Toxic (Confidence: 99.2%)
 ```
 
-### Run in Google Colab  
-1. Mount Google Drive  
-2. Upload the full project folder including the model directory  
-3. In a code cell, run:
-
-```python
+### Run in Google Colab
+```
 !python src/predict.py --text "Your comment here"
 ```
 
-This simulates a real-world moderation use case — useful for platforms, chat systems, or backend screening tools.
+Requires uploaded model folder and mounted Google Drive.
 
-## Download the Trained Model  
+---
+
+## Model Download
+
 Due to GitHub’s file size limits, the model is hosted externally:
 
-📁 [Download from Google Drive](https://drive.google.com/drive/folders/1uLslf5BDwLqoB26UGNpvIZf6wK9vy_Fl?usp=sharing)
+Download from Google Drive:  
+https://drive.google.com/drive/folders/1uLslf5BDwLqoB26UGNpvIZf6wK9vy_Fl?usp=sharing
 
-**What’s included:**  
-- Model weights (`pytorch_model.bin`, `model.safetensors`)  
+Included:
+- pytorch_model.bin, model.safetensors  
 - Tokenizer files  
-- Configs for BERT-based inference
+- BERT config files
 
-**To use:**  
-- Download and unzip the folder  
-- Place it in your root directory as `bert_toxic_classifier/`  
-- Run the prediction script or plug into an API
+Usage:
+- Place the unzipped folder as bert_toxic_classifier/ in your project root
+- Run predictions or deploy the model via API
+
+---
+
+## Deployment (Planned)
+
+- FastAPI REST endpoint: /predict  
+- Input: JSON with a comment string  
+- Output: Toxic or non-toxic with confidence  
+- Hosting target: Render or Hugging Face Spaces
+
+---
+
+## Project Structure
+
+```
+ai-safety-toxic-content-detection/
+├── src/
+│   ├── predict.py           # CLI inference script
+│   └── deploy/              # (Planned) FastAPI app
+├── bert_toxic_classifier/   # Downloaded model directory
+├── requirements.txt         # Python dependencies
+└── README.md                # This file
+```
+
+---
+
+## Lessons Learned
+
+- How to fine-tune BERT for sensitive classification tasks
+- The impact of dataset imbalance on real-world NLP models
+- The trade-off between high recall and false positives
+- How to prepare an NLP model for production with APIs and CLI tools
+
+---
+
+## Contact
+
+G. Kablan Assebian  
+MSc Data Science Candidate | NLP Enthusiast | Aspiring ML Engineer  
+gomis.k.assebian@gmail.com
